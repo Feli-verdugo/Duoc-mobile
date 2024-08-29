@@ -1,0 +1,51 @@
+<ion-content>
+
+  <div class="background">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <div class="header">
+    <h1>Duoc Mobile</h1>
+  </div>
+
+  <div class="login-container">
+    <ion-card>
+      
+
+      <div class="background"></div>
+      <div class="login-container">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Inicio de sesion</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item>
+              <ion-label position="floating">Nombre de usuario</ion-label>
+              <ion-input type="text" [(ngModel)]="loginData.username"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Contraseña</ion-label>
+              <ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>User Type</ion-label>
+              <ion-select [(ngModel)]="loginData.userType">
+                <ion-select-option value="driver">Conductor</ion-select-option>
+                <ion-select-option value="client">Cliente</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-button expand="full" (click)="login()">Iniciar sesion</ion-button>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+
+
+    </ion-card>
+  </div>
+
+
+
+</ion-content>
