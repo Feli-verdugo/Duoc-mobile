@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-
+import { AnimationController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -12,10 +13,17 @@ export class LoginPage {
     userType: ''
   };
 
-  constructor() {}
+  constructor(
+    private navCtrl: NavController
+  ) {}
 
   login() {
     console.log(this.loginData);
     
   }
+
+  MandarAhome(){
+    this.navCtrl.navigateForward('/home');
+  }
+  
 }
