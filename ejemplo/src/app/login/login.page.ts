@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { AnimationController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -14,7 +17,8 @@ export class LoginPage {
   };
 
   constructor(
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private router: Router
   ) {}
 
   login() {
@@ -23,7 +27,19 @@ export class LoginPage {
   }
 
   MandarAhome(){
-    this.navCtrl.navigateForward('/home');
+
+    if (this.loginData.userType === 'driver') {
+
+      this.router.navigate(['/conductor']);  
+
+    } else if (this.loginData.userType === 'client') {
+
+      this.router.navigate(['/pasajero']);  
+
+    } else {
+      
+      console.log('Por favor seleccione un tipo de usuario');
+    }
   }
   
 }
