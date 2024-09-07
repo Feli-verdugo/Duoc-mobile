@@ -1,7 +1,4 @@
 <ion-content>
-
-  <ion-icon src="assets/DuocLogo (1).svg" id="logoDuoc"></ion-icon>
-  
   <div class="background">
     <div class="shape shape-1"></div>
     <div class="shape shape-2"></div>
@@ -32,10 +29,10 @@
               <ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
             </ion-item>
             <ion-item>
-              <ion-label>Tipo de usaurio</ion-label>
+              <ion-label>Tipo de usuario</ion-label>
               <ion-select [(ngModel)]="loginData.userType">
                 <ion-select-option value="driver">Conductor</ion-select-option>
-                <ion-select-option value="client">Cliente</ion-select-option>
+                <ion-select-option value="client">Pasajero</ion-select-option>
               </ion-select>
             </ion-item>
             <ion-button expand="full" (click)="MandarAhome()">Iniciar sesion</ion-button>

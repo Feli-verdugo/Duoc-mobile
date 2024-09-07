@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { NavController } from '@ionic/angular';
 @Component({
   selector: 'app-conductor',
   templateUrl: './conductor.page.html',
@@ -7,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConductorPage implements OnInit {
 
-  constructor() { }
+  constructor(private navCtrl: NavController) { }
+
+  MandarAlogin(){
+    this.navCtrl.navigateForward('/login');
+  }
 
   ngOnInit() {
   }
