@@ -1,0 +1,75 @@
+//pal mapa
+.map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35vh; 
+    background-color: #FFB800; 
+    padding: 10px;
+    border-bottom: 2px solid #464646; 
+}
+
+.map-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+  
+  // pa la lista de los clientes
+
+.client-list-container {
+    height: calc(100vh - 35vh - 60px); 
+    overflow-y: auto; 
+    padding: 10px 0;
+}
+
+ion-list {
+    margin: 0;
+    padding: 0 16px;
+}
+
+  
+
+  
+ion-item {
+    --background: #f7f7f7;
+    --border-color: #e0e0e0;
+    border-bottom: 1px solid var(--border-color);
+}
+  
+ion-icon {
+    font-size: 24px;
+    color: #4b4c4d;
+}
+  
+ion-label h2 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+  
+ion-label p {
+    font-size: 14px;
+    color: #888;
+}
+  
+  //la barra de los iconos de abajo
+
+ion-tab-bar {
+    background-color: #212435;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+}
+  
+ion-tab-button {
+    --color-selected: #fcb32e;
+    --color: #4b4c4d;
+}
+  
+  ion-tab-button:hover ion-icon {
+    transform: scale(1.2);
+    transition: transform 0.2s ease-in-out;
+}
+  
