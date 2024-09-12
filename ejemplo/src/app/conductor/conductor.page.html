@@ -1,11 +1,16 @@
-<ion-content [fullscreen]="true">
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>TeLlevoApp-Conductor</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <!-- el contenedor del mapa -->
+
+
+<ion-content [fullscreen]="true">
   <div class="map-container">
     <img src="assets/maps.png" alt="Map" class="map-image" />
   </div>
 
-  <!-- pa la lista de los clientes -->
   <div class="client-list-container">
     <ion-list>
       <ion-item *ngFor="let cliente of clientes">
@@ -18,7 +23,6 @@
     </ion-list>
   </div>
 
-  <!-- menu de abajito yera -->
   <ion-footer>
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="home" (click)="MandarAlogin()">
@@ -28,7 +32,7 @@
 
      
       <ion-tab-button tab="options" (click)="presentOptionsPopover($event)">
-        <ion-icon name="settings-outline"></ion-icon>
+        <ion-icon name="settings-outline" ></ion-icon>
         <ion-label>Opciones</ion-label>
       </ion-tab-button>
 
