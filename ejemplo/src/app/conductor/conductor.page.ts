@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { PopoverController } from '@ionic/angular';
+import { MenuLoko } from '../menu-loko/menu-loko.component';
 @Component({
   selector: 'app-conductor',
   templateUrl: './conductor.page.html',
@@ -7,7 +9,7 @@ import { NavController } from '@ionic/angular';
 })
 export class ConductorPage implements OnInit {
 
-  constructor(private navCtrl: NavController) { }
+  constructor(private navCtrl: NavController, private popoverController: PopoverController) { }
 
   clientes = [
     { nombre: 'Cliente 1', costo: '$2000' },
@@ -21,6 +23,16 @@ export class ConductorPage implements OnInit {
   MandarAlogin(){
     this.navCtrl.navigateForward('/login');
   }
+
+  async presentOptionsPopover(event: Event) {
+    const popover = await this.popoverController.create({
+      component: MenuLoko,
+      event: event,
+      translucent: true,
+    });
+    await popover.present();
+  }
+
 
   ngOnInit() {
   }
