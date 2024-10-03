@@ -5,22 +5,29 @@
 </ion-header>
 
 <ion-content>
-  <div class="input-container">
-    <ion-item>
-      <ion-label position="floating">Desde:</ion-label>
-      <ion-input placeholder="Selecciona punto de partida"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Hasta:</ion-label>
-      <ion-input placeholder="Selecciona destino"></ion-input>
-    </ion-item>
-  </div>
 
 <ion-content>
-  <div class="map-container">
-    <img src="assets/PlaceHolder.png" alt="Mapa" class="map-image">
-  </div>
+   <div id="info-viaje">
+      <div class="distancia">
+        <ion-icon name="analytics"></ion-icon>
+        {{distancia}}
+      </div>
+      <div class="tiempo">
+        <ion-icon name="time"></ion-icon>
+        {{duracion}}
+      </div>
+    </div> 
+
+    <div #map id="map"></div>
+
+    <input type="text" [(ngModel)]="end" (input)="updateSearchResults()" placeholder="Destino" id="input">
+    <div id="rutas" *ngIf="autocompleteItems" [hidden]="autocompleteItems.length == 0">
+      <div class="ruta" *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+        {{ item.description }}
+      </div>
+    </div> 
+  
+
 </ion-content>
   
   <ion-footer>
