@@ -127,20 +127,37 @@ export class PasajeroPage implements OnInit {
     );
   }
 
-  // Nueva función para actualizar los resultados de búsqueda
+  // Función para actualizar los resultados de búsqueda
   updateSearchResults() {
-    // Aquí puedes implementar la lógica para actualizar los resultados de búsqueda.
-    // Por ahora, se deja un ejemplo básico:
-    this.autocompleteItems = [
-      { name: 'Lugar 1' },
-      { name: 'Lugar 2' },
-      { name: 'Lugar 3' }
-    ];
+    if (this.end.trim() === '') {
+      this.autocompleteItems = [];
+      return;
+    }
+
+    let service = new google.maps.places.AutocompleteService();
+    service.getPlacePredictions(
+      {
+        input: this.end,
+        componentRestrictions: { country: 'cl' }, // Restringir a un país
+      },
+      (predictions: any[], status: string) => {
+        this.zone.run(() => {
+          this.autocompleteItems = [];
+          if (predictions) {
+            predictions.forEach((prediction) => {
+              this.autocompleteItems.push(prediction);
+            });
+          }
+        });
+      }
+    );
   }
 
-  // Nueva función para manejar la selección de un resultado
+  // Función para manejar la selección de un resultado
   selectSearchResult(item: any) {
-    this.end = item.name; // Por ejemplo, actualiza la variable "end" con el lugar seleccionado
+    this.end = item.description; // Actualiza el destino con el lugar seleccionado
+    this.autocompleteItems = []; // Limpiamos la lista después de la selección
+    this.calculateAndDisplayRoute(); // Recalcula la ruta con el nuevo destino
   }
 
   ngOnInit() {}
