@@ -1,37 +1,10 @@
 <ion-header>
   <ion-toolbar color="dark">
-    <ion-title>TeLlevoApp-Pasajeroa</ion-title>
+    <ion-title>TeLlevoApp-Pasajero</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
-  <!-- Información del viaje (distancia y duración) -->
-  <div id="info-viaje">
-    <div class="distancia">
-      <ion-icon name="analytics"></ion-icon>
-      {{distancia}}
-    </div>
-    <div class="tiempo">
-      <ion-icon name="time"></ion-icon>
-      {{duracion}}
-    </div>
-  </div> 
-
-  <!-- Barra de búsqueda para ingresar destino -->
-  <div class="input-container">
-    <input type="text" [(ngModel)]="end" (input)="updateSearchResults()" placeholder="Ingresa un destino" id="input">
-  </div>
-
-  <!-- Contenedor del mapa -->
-  <div #map id="map" class="map-container"></div>
-
-  <!-- Lista de resultados de autocompletar -->
-  <div id="rutas" *ngIf="autocompleteItems.length > 0">
-    <div class="ruta" *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-      {{ item.description }}
-    </div>
-  </div> 
 
 </ion-content>
   

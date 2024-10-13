@@ -6,30 +6,42 @@
 
 
 <ion-content [fullscreen]="true">
-  <div class="map-container">
-    <img src="assets/maps.png" alt="Map" class="map-image" />
+  <!-- Información del viaje (distancia y duración) -->
+  <div id="info-viaje">
+    <div class="distancia">
+      <ion-icon name="analytics"></ion-icon>
+      {{distancia}}
+    </div>
+    <div class="tiempo">
+      <ion-icon name="time"></ion-icon>
+      {{duracion}}
+    </div>
+  </div> 
+
+  <!-- Barra de búsqueda para ingresar destino -->
+  <div class="input-container">
+    <input type="text" [(ngModel)]="end" (input)="updateSearchResults()" placeholder="Ingresa un destino" id="input">
   </div>
 
-  <div class="client-list-container">
-    <ion-list>
-      <ion-item *ngFor="let cliente of clientes">
-        <ion-icon name="person-circle-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h2>{{ cliente.nombre }}</h2>
-          <p>Costo: {{ cliente.costo }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </div>
+  <!-- Contenedor del mapa -->
+  <div #map id="map" class="map-container"></div>
 
-  <ion-footer>
+  <!-- Lista de resultados de autocompletar -->
+  <div id="rutas" *ngIf="autocompleteItems.length > 0">
+    <div class="ruta" *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+      {{ item.description }}
+    </div>
+  </div> 
+
+</ion-content>
+<ion-footer>
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="home" (click)="MandarAlogin()">
         <ion-icon name="home-outline"></ion-icon>
         <ion-label>Home</ion-label>
       </ion-tab-button>
 
-     
+
       <ion-tab-button tab="options" (click)="presentOptionsPopover($event)">
         <ion-icon name="settings-outline" ></ion-icon>
         <ion-label>Opciones</ion-label>
@@ -46,5 +58,3 @@
       </ion-tab-button>
     </ion-tab-bar>
   </ion-footer>
-
-</ion-content>

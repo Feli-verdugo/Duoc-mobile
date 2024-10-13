@@ -1,13 +1,4 @@
-//pal mapa
-.map-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 35vh; 
-    background-color: #FFB800; 
-    padding: 10px;
-    border-bottom: 2px solid #464646; 
-}
+
 
 .map-image {
     max-width: 120%;
@@ -73,4 +64,42 @@ ion-tab-button {
 ion-tab-button:hover ion-icon {
     transform: scale(1.2);
     transition: transform 0.2s ease-in-out;
+}
+
+
+//Para el mapa
+#input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#rutas {
+    background-color: white;
+    position: absolute;
+    top: 145px;
+    left: 10px;
+    right: 10px;
+    z-index: 10;
+}
+.tiempo{
+    margin-left: 180px;
+    margin-top: -27px;
+}
+.ruta {
+    background-color: #FCB32E;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.ruta:hover {
+    background-color: #000000;
+}
+
+.map-container {
+    position: relative;
+    height: calc(100vh - 60px); /* Altura ajustada para que el mapa llene la pantalla */
+    width: 100%;
+    z-index: 1;
 }
