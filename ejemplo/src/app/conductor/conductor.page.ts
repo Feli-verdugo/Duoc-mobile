@@ -39,6 +39,10 @@ export class ConductorPage implements OnInit {
     private popoverController: PopoverController
   ) {}
 
+  MandarACasita(){
+    this.navCtrl.navigateForward('/home');
+  }
+
   MandarAlogin() {
     this.navCtrl.navigateForward('/login');
   }

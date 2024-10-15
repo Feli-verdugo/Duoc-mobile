@@ -32,6 +32,10 @@ export class PasajeroPage implements OnInit {
     private popoverController: PopoverController
   ) {}
 
+  MandarACasita(){
+    this.navCtrl.navigateForward('/home');
+  }
+
   MandarAlogin() {
     this.navCtrl.navigateForward('/login');
   }

@@ -1,27 +1,34 @@
-#container {
+ion-header {
+  --background: #212435;
+}
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #fcb32e;
+  padding: 20px;
+}
+
+.welcome-message {
+  font-size: 2.5rem;
+  color: #212435;
+  font-weight: bold;
   text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  margin-bottom: 10px;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.welcome-text {
+  font-size: 1.2rem;
+  color: #212435;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+ion-button {
+  --background: #212435;
+  --color: #fcb32e;
+  font-size: 1.1rem;
 }

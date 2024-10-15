@@ -1,0 +1,47 @@
+<ion-content>
+  <div class="background">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <div class="header">
+    <h1>TeLlevoApp</h1>
+  </div>
+
+  <div class="register-container">
+    <ion-card>
+      <div class="register-container2">
+        <ion-card-header>
+          <ion-card-title class="subtitulo">Registro de usuario</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input type="text" [(ngModel)]="registerData.name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" [(ngModel)]="registerData.email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input type="password" [(ngModel)]="registerData.password"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Confirmar Contraseña</ion-label>
+            <ion-input type="password" [(ngModel)]="registerData.confirmPassword"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Tipo de usuario</ion-label>
+            <ion-select [(ngModel)]="registerData.userType">
+              <ion-select-option value="driver">Conductor</ion-select-option>
+              <ion-select-option value="client">Pasajero</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-button expand="full" (click)="onRegister()">Registrar</ion-button>
+        </ion-card-content>
+      </div>
+    </ion-card>
+  </div>
+</ion-content>

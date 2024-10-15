@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private navCtrl: NavController) {
+    this.initializeApp();
+  }
+
+  initializeApp() {
+    // Aquí puedes controlar la navegación inicial
+    this.navCtrl.navigateRoot('/home'); // Redirige a la página de inicio
+  }
 }

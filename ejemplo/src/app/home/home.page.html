@@ -1,10 +1,11 @@
+
 <ion-content [fullscreen]="true">
-
-  <ion-button (click)="MandarAlogin()">Ir al login</ion-button>
-
-
-  <div #map id="map" style="height: 60%; width: 100%;"></div>
-
-  
+  <div class="welcome-container">
+    <h1 class="welcome-message">Bienvenidos a TeLlevoAPP</h1>
+    <p class="welcome-text">Para poder registrarte, pincha en el botón de abajo.</p>
+    <ion-button expand="block" color="dark" [routerLink]="'/registro'">Registrarse</ion-button>
+  </div>
 </ion-content>
+
+
 
