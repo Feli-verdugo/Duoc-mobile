@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-registro',
@@ -15,17 +17,25 @@ export class RegistroPage {
     userType: ''
   };
 
-  constructor(private navCtrl: NavController) {}
+  constructor(private navCtrl: NavController, private authService: AuthService, private router: Router) {}
 
-  onRegister() {
+  async onRegister() {
     if (this.registerData.password !== this.registerData.confirmPassword) {
       console.error('Las contraseñas no coinciden');
       return;
     }
 
-    console.log('Usuario registrado:', this.registerData);
+    try {
+      
+      // Aqui llamamos el registro completo
 
-    // Redirigir a la página de inicio de sesión después de registrarse
-    this.navCtrl.navigateForward('/login');
+      await this.authService.register(this.registerData.email, this.registerData.password, this.registerData.userType);
+      console.log('Usuario registrado y guardado en Firebase e Ionic Storage:', this.registerData);
+
+      this.router.navigate(['/login']);  // Redirige a login despues de registrarse sin dramas yera
+    
+    } catch (error) {
+      console.log('Error en el registro:', error);
+    }
   }
 }

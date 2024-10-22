@@ -10,6 +10,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment.prod';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 @NgModule({
   declarations: 
@@ -22,7 +23,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     FormsModule, 
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    IonicStorageModule.forRoot() // Pa la base de datos
   ],
   providers: 
   [{ provide: RouteReuseStrategy, 

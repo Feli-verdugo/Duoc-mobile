@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';  // Asegúrate de tener AuthService correctamente importado
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,10 +10,12 @@ import { AuthService } from '../services/auth.service';  // Asegúrate de tener 
 })
 export class LoginPage {
   loginData = {
-    email: '',  // Cambiado a 'email'
+    email: '',
     password: '',
     userType: ''
   };
+
+  errorMessage: string = '';  // Esta weaita muestra el mensaje de error
 
   constructor(
     private navCtrl: NavController,
@@ -21,18 +23,37 @@ export class LoginPage {
     private authService: AuthService
   ) {}
 
-  // Método para iniciar sesión
-  login() {
+  // Con esto de abajo iniciamos sesion
+
+  async login() {
     const { email, password } = this.loginData;
-    this.authService.login(email, password).then(res => {
-      console.log('Inicio de sesión exitoso', res);
+
+    try {
+
+      // Con esta otra wea llamamos al login y asi obtenemos el tipo de usuario o algo asi era, creo xd
+      
+      const { userCredential, userType } = await this.authService.login(email, password);
+      console.log('Inicio de sesión exitoso', userCredential);
+      this.loginData.userType = userType;
+
+      // pa limpiar el mensaje de error
+
+      this.errorMessage = '';
+
+      // Esto de abajo te redirige segun el tipo de usuario
+
       this.MandarAhome();
-    }).catch(error => {
-      console.log('Error en el inicio de sesión', error);
-    });
+    } catch (error) {
+
+      // Este de aca!! esta wea es para mostrar el mensaje de error, en este caso, y por ahora la wea sera para avisar que las credenciales del login tan malitas
+      
+      this.errorMessage = 'Correo o contraseña incorrectos. Intenta nuevamente.';
+      console.log('Error en el inicio de sesión:', error);
+    }
   }
 
-  // Método para redirigir a la home según el tipo de usuario
+  // Esto de aca abajo es todo el entrañado que se encarga de redirigir al home segun el tipo de usuario que tienes
+
   MandarAhome() {
     if (this.loginData.userType === 'driver') {
       this.router.navigate(['/conductor']);
