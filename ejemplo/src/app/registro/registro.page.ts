@@ -25,17 +25,17 @@ export class RegistroPage {
       return;
     }
 
+    if (!this.registerData.userType) {
+      console.error('Por favor selecciona un tipo de usuario');
+      return;
+    }
+
     try {
-      
-      // Aqui llamamos el registro completo
-
       await this.authService.register(this.registerData.email, this.registerData.password, this.registerData.userType);
-      console.log('Usuario registrado y guardado en Firebase e Ionic Storage:', this.registerData);
-
-      this.router.navigate(['/login']);  // Redirige a login despues de registrarse sin dramas yera
-    
+      console.log('Usuario registrado y guardado en Firebase:', this.registerData);
+      this.router.navigate(['/login']);
     } catch (error) {
-      console.log('Error en el registro:', error);
+      console.error('Error en el registro:', error);
     }
   }
 }

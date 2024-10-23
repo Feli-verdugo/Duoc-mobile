@@ -15,7 +15,7 @@ export class LoginPage {
     userType: ''
   };
 
-  errorMessage: string = '';  // Esta weaita muestra el mensaje de error
+  errorMessage: string = '';
 
   constructor(
     private navCtrl: NavController,
@@ -23,41 +23,38 @@ export class LoginPage {
     private authService: AuthService
   ) {}
 
-  // Con esto de abajo iniciamos sesion
-
   async login() {
     const { email, password } = this.loginData;
 
     try {
-
-      // Con esta otra wea llamamos al login y asi obtenemos el tipo de usuario o algo asi era, creo xd
-      
       const { userCredential, userType } = await this.authService.login(email, password);
       console.log('Inicio de sesión exitoso', userCredential);
-      this.loginData.userType = userType;
 
-      // pa limpiar el mensaje de error
-
-      this.errorMessage = '';
-
-      // Esto de abajo te redirige segun el tipo de usuario
-
-      this.MandarAhome();
-    } catch (error) {
-
-      // Este de aca!! esta wea es para mostrar el mensaje de error, en este caso, y por ahora la wea sera para avisar que las credenciales del login tan malitas
-      
-      this.errorMessage = 'Correo o contraseña incorrectos. Intenta nuevamente.';
+      // Asegúrate de que el userType no sea nulo
+      if (userType) {
+        this.MandarAhome(userType);
+      } else {
+        console.log('No se pudo obtener el tipo de usuario');
+        this.errorMessage = 'No se pudo determinar el tipo de usuario.';
+      }
+    } catch (error: any) {
+      // Mensaje específico para errores de credenciales
+      if (error.code === 'auth/user-not-found') {
+        this.errorMessage = 'No se encontró un usuario con este correo.';
+      } else if (error.code === 'auth/wrong-password') {
+        this.errorMessage = 'Contraseña incorrecta.';
+      } else {
+        this.errorMessage = 'Error en el inicio de sesión. Intenta nuevamente.';
+      }
       console.log('Error en el inicio de sesión:', error);
     }
   }
 
-  // Esto de aca abajo es todo el entrañado que se encarga de redirigir al home segun el tipo de usuario que tienes
-
-  MandarAhome() {
-    if (this.loginData.userType === 'driver') {
+  MandarAhome(userType: string) {
+    console.log('Tipo de usuario en MandarAhome:', userType);
+    if (userType === 'driver') {
       this.router.navigate(['/conductor']);
-    } else if (this.loginData.userType === 'client') {
+    } else if (userType === 'client') {
       this.router.navigate(['/pasajero']);
     } else {
       console.log('Por favor seleccione un tipo de usuario');

@@ -8,6 +8,8 @@ import { PasajeroPageRoutingModule } from './pasajero-routing.module';
 
 import { PasajeroPage } from './pasajero.page';
 
+import { Component, EventEmitter, Output } from '@angular/core';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -17,4 +19,12 @@ import { PasajeroPage } from './pasajero.page';
   ],
   declarations: [PasajeroPage]
 })
-export class PasajeroPageModule {}
+export class PasajeroPageModule {
+
+  @Output() logoutEvent = new EventEmitter<void>();
+
+
+  logout() {
+    this.logoutEvent.emit(); // Emitir el evento
+  }
+}

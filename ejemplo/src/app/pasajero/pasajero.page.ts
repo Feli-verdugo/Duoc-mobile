@@ -2,6 +2,7 @@ import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core'
 import { NavController, Platform } from '@ionic/angular';
 import { MenuLoko } from '../menu-loko/menu-loko.component';
 import { PopoverController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
 
 declare var google: any;
 
@@ -29,7 +30,8 @@ export class PasajeroPage implements OnInit {
     private navCtrl: NavController, 
     private platform: Platform,
     private zone: NgZone, 
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
+    private authService: AuthService  
   ) {}
 
   MandarACasita(){
@@ -165,4 +167,12 @@ export class PasajeroPage implements OnInit {
   }
 
   ngOnInit() {}
+
+
+
+  logout() {
+    this.authService.logout();
+  }
+
+
 }
