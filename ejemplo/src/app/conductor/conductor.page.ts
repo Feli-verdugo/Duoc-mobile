@@ -2,6 +2,8 @@ import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core'
 import { NavController, Platform } from '@ionic/angular';
 import { MenuLoko } from '../menu-loko/menu-loko.component';
 import { PopoverController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 declare var google: any;
 
@@ -36,7 +38,9 @@ export class ConductorPage implements OnInit {
     private navCtrl: NavController,
     private platform: Platform,
     private zone: NgZone,
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
+    private authService: AuthService,  // Inyecta AuthService
+    private router: Router  // Inyecta Router 
   ) {}
 
   MandarACasita(){
@@ -163,5 +167,15 @@ export class ConductorPage implements OnInit {
     this.calculateAndDisplayRoute();
   }
 
+
+  async onLogout() {
+    try {
+      await this.authService.logout();
+      console.log('Sesión cerrada');
+      this.router.navigate(['/login']); // Redirige a la página de login después de cerrar sesión
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+}
   ngOnInit() {}
 }

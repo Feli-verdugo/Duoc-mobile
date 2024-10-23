@@ -9,13 +9,13 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
+  // Asegúrate de que loginData incluya userType
   loginData = {
     email: '',
     password: '',
-    userType: ''
   };
 
-  errorMessage: string = '';
+  errorMessage: string = ''; // Mensaje de error
 
   constructor(
     private navCtrl: NavController,
@@ -23,35 +23,24 @@ export class LoginPage {
     private authService: AuthService
   ) {}
 
+  // Método para iniciar sesión
   async login() {
     const { email, password } = this.loginData;
 
     try {
-      const { userCredential, userType } = await this.authService.login(email, password);
-      console.log('Inicio de sesión exitoso', userCredential);
+      const userData = await this.authService.login(email, password);
+      console.log('Inicio de sesión exitoso', userData);
 
-      // Asegúrate de que el userType no sea nulo
-      if (userType) {
-        this.MandarAhome(userType);
-      } else {
-        console.log('No se pudo obtener el tipo de usuario');
-        this.errorMessage = 'No se pudo determinar el tipo de usuario.';
-      }
-    } catch (error: any) {
-      // Mensaje específico para errores de credenciales
-      if (error.code === 'auth/user-not-found') {
-        this.errorMessage = 'No se encontró un usuario con este correo.';
-      } else if (error.code === 'auth/wrong-password') {
-        this.errorMessage = 'Contraseña incorrecta.';
-      } else {
-        this.errorMessage = 'Error en el inicio de sesión. Intenta nuevamente.';
-      }
+      // Redirigir según el tipo de usuario
+      this.MandarAhome(userData.userType);
+    } catch (error) {
+      this.errorMessage = 'Correo o contraseña incorrectos. Intenta nuevamente.';
       console.log('Error en el inicio de sesión:', error);
     }
   }
 
+  // Método para redirigir al home según el tipo de usuario
   MandarAhome(userType: string) {
-    console.log('Tipo de usuario en MandarAhome:', userType);
     if (userType === 'driver') {
       this.router.navigate(['/conductor']);
     } else if (userType === 'client') {

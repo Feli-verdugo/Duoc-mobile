@@ -1,59 +1,46 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-    private _storage: Storage | null = null;
+  constructor(private router: Router) {}
 
-    constructor(private afAuth: AngularFireAuth, private router: Router, private storage: Storage) {
-        this.init();
-    }
+  // Método de registro que incluye el tipo de usuario
+  async register(email: string, password: string, userType: string) {
+    const userData = { email, password, userType };
+    
+    // Guardar el usuario en Local Storage
+    localStorage.setItem(email, JSON.stringify(userData));
+    console.log('Usuario registrado:', userData);
+    
+    return userData;
+  }
 
-    async init() {
-        const storage = await this.storage.create();
-        this._storage = storage;
-    }
+  // Método de inicio de sesión
+  async login(email: string, password: string) {
+    const userData = JSON.parse(localStorage.getItem(email) || '{}');
 
-    async register(email: string, password: string, userType: string) {
-        try {
-            const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
-            console.log('Usuario registrado:', userCredential);
-            await this._storage?.set('userType', userType);
-            return userCredential;
-        } catch (error) {
-            console.error('Error en el registro:', error);
-            throw error;
-        }
+    if (userData && userData.password === password) {
+      console.log('Usuario logueado:', userData);
+      return userData; // Devuelve el objeto de usuario
+    } else {
+      console.error('Credenciales incorrectas');
+      throw new Error('Credenciales incorrectas');
     }
+  }
 
-    async login(email: string, password: string) {
-        try {
-            const userCredential = await this.afAuth.signInWithEmailAndPassword(email, password);
-            console.log('Usuario logueado:', userCredential);
-            const userType = await this._storage?.get('userType'); 
-            return { userCredential, userType };
-        } catch (error) {
-            console.error('Error en el login:', error);
-            throw error; // Lanza el error para ser manejado en el componente
-        }
-    }
+  // Cerrar sesión
+  async logout() {
+    // Remueve cualquier otro dato guardado localmente
+    this.router.navigate(['/login']); // Redirige a la página de login
+  }
 
-    async logout() {
-        try {
-            await this.afAuth.signOut();
-            await this._storage?.remove('userType'); // Limpiar el tipo de usuario
-            this.router.navigate(['/login']);
-        } catch (error) {
-            console.error('Error al cerrar sesión:', error);
-        }
-    }
-
-    getAuthState() {
-        return this.afAuth.authState;
-    }
+  // Obtener el estado del usuario autenticado
+  getAuthState() {
+    const email = localStorage.getItem('email');
+    return email ? JSON.parse(localStorage.getItem(email) || '{}') : null;
+  }
 }
