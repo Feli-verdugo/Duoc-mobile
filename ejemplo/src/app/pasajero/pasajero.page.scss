@@ -8,9 +8,13 @@ ion-title {
     flex-direction: column;
 }
 
+#info-viaje{
+    color: #fff;
+}
+
 .input-container {
     position: absolute;
-    top: 40px;
+    top: 97px;
     left: 10px;
     right: 10px;
     z-index: 5; /* Para que la barra de búsqueda quede por encima del mapa */
@@ -30,14 +34,17 @@ ion-title {
 #rutas {
     background-color: white;
     position: absolute;
-    top: 96px;
+    top: 155px;
     left: 10px;
     right: 10px;
     z-index: 10;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-
+.tiempo{
+    margin-left: 210px;
+    margin-top: -19px;
+}
 .ruta {
     background-color: #FCB32E;
     padding: 10px;

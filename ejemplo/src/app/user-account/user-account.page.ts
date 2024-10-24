@@ -23,6 +23,8 @@ export class UserAccountPage implements OnInit {
     const user = this.authService.getAuthState(); // Obtener los datos del usuario desde AuthService
     if (user) {
       this.userData = user;
+    } else {
+      console.log('No hay usuario autenticado');
     }
   }
 

@@ -23,7 +23,6 @@ export class RegistroPage {
 
   constructor(private navCtrl: NavController, private authService: AuthService, private router: Router) {}
 
-
   togglePasswordVisibility() {
     if (this.passwordType === 'password') {
       this.passwordType = 'text';
@@ -34,7 +33,6 @@ export class RegistroPage {
     }
   }
 
-
   async onRegister() {
     if (this.registerData.password !== this.registerData.confirmPassword) {
       console.error('Las contraseñas no coinciden');
@@ -43,7 +41,12 @@ export class RegistroPage {
 
     try {
       // Registro del usuario en el servicio de autenticación
-      await this.authService.register(this.registerData.email, this.registerData.password, this.registerData.userType);
+      await this.authService.register(
+        this.registerData.email,
+        this.registerData.password,
+        this.registerData.userType,
+        this.registerData.name // Aquí se agrega el nombre de usuario
+      );
       console.log('Usuario registrado y guardado en LocalStorage:', this.registerData);
 
       // Redirigir a la página de inicio de sesión
