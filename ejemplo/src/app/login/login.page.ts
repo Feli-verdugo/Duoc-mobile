@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { HttpClient } from '@angular/common/http';
+import { LoadingController } from '@ionic/angular';
 
 
 @Component({
@@ -13,18 +15,24 @@ export class LoginPage {
   // Asegúrate de que loginData incluya userType
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
-
+  
   loginData = {
     email: '',
     password: '',
+
+    
   };
+
+  isModalOpen = false;
 
   errorMessage: string = ''; // Mensaje de error
 
   constructor(
     private navCtrl: NavController,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private http : HttpClient,
+    private loadingCtrl: LoadingController
   ) {}
 
   togglePasswordVisibility() {
@@ -67,7 +75,40 @@ export class LoginPage {
     }
   }
 
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
 
 
+  async resetPass() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando...'
+    });
+    loading.present();
+
+    const usuarioEncontrado = this.loginData.email; // Usa el email del formulario actual
+    if (usuarioEncontrado) {
+      let nuevaClave = Math.random().toString(36).slice(-6); // Genera nueva contraseña
+      let body = {
+        "email": this.loginData.email, // Email del usuario que solicitó el reset
+        "clave": nuevaClave,
+        "app": "TellevoAPP" // Cambia por el nombre de tu aplicación si es necesario
+      };
+
+      // Realiza la petición HTTP
+      this.http.post("https://myths.cl/api/reset_password.php", body)
+        .subscribe((data) => {
+          console.log('Respuesta del servidor:', data);
+          loading.dismiss();
+          alert('Se ha enviado una nueva contraseña a tu correo.');
+        }, error => {
+          console.error('Error en la petición', error);
+          loading.dismiss();
+        });
+    } else {
+      console.log("Email no encontrado");
+      loading.dismiss();
+    }
+  }
   
 }

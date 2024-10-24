@@ -36,7 +36,7 @@
 
             <ion-button expand="full" (click)="login()">Iniciar sesión</ion-button> 
 
-            <ion-button class="olvidada" fill="clear">¿Olvidaste la contraseña?</ion-button>
+            <ion-button class="olvidada" fill="clear" (click)="setOpen(true)">¿Olvidaste la contraseña?</ion-button>
           </ion-card-content>
       </div>
 
@@ -44,6 +44,21 @@
   </div>
 
   
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <div class="modal-container">
+          <h1>Recuperar contraseña</h1>
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" [(ngModel)]="loginData.email"></ion-input>
+          </ion-item>
+          <ion-button expand="full" (click)="resetPass()">Recuperar</ion-button>
+          <ion-button expand="full" (click)="setOpen(false)">Cancelar</ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
   
 
 </ion-content>
