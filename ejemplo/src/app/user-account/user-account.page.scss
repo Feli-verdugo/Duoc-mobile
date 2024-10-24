@@ -1,0 +1,23 @@
+.account-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .user-icon {
+    font-size: 100px;
+    color: #FCB32E;
+  }
+  
+  .account-info {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .account-info p {
+    margin: 10px 0;
+    font-size: 18px;
+  }
+  

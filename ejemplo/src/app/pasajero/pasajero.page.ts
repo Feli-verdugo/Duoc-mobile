@@ -4,6 +4,9 @@ import { MenuLoko } from '../menu-loko/menu-loko.component';
 import { PopoverController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular'; // Importar el ModalController
+import { UserAccountPage } from '../user-account/user-account.page'; // Importar la página del modal
+
 
 declare var google: any;
 
@@ -33,7 +36,8 @@ export class PasajeroPage implements OnInit {
     private zone: NgZone, 
     private popoverController: PopoverController,
     private authService: AuthService,  // Inyecta AuthService
-    private router: Router  // Inyecta Router 
+    private router: Router,
+    private modalController: ModalController  
   ) {}
 
   MandarACasita(){
@@ -52,6 +56,13 @@ export class PasajeroPage implements OnInit {
       translucent: true,
     });
     await popover.present();
+  }
+
+  async presentAccountModal() {
+    const modal = await this.modalController.create({
+      component: UserAccountPage, // Referencia a la página de cuenta
+    });
+    return await modal.present();
   }
 
 

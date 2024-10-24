@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Información de la cuenta</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="account-container">
+    <ion-icon name="person-circle-outline" class="user-icon"></ion-icon>
+
+    <div class="account-info">
+      <p><strong>Nombre de Usuario:</strong> {{ userData.email }}</p>
+      <p><strong>Correo:</strong> {{ userData.email }}</p>
+      <p><strong>Tipo de Cuenta:</strong> {{ userData.userType }}</p>
+    </div>
+  </div>
+</ion-content>
