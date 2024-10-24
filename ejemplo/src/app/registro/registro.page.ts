@@ -9,6 +9,10 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage {
+
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+  
   registerData = {
     name: '',
     email: '',
@@ -18,6 +22,18 @@ export class RegistroPage {
   };
 
   constructor(private navCtrl: NavController, private authService: AuthService, private router: Router) {}
+
+
+  togglePasswordVisibility() {
+    if (this.passwordType === 'password') {
+      this.passwordType = 'text';
+      this.passwordIcon = 'eye';
+    } else {
+      this.passwordType = 'password';
+      this.passwordIcon = 'eye-off';
+    }
+  }
+
 
   async onRegister() {
     if (this.registerData.password !== this.registerData.confirmPassword) {

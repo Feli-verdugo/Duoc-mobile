@@ -10,6 +10,9 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginPage {
   // Asegúrate de que loginData incluya userType
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+
   loginData = {
     email: '',
     password: '',
@@ -22,6 +25,19 @@ export class LoginPage {
     private router: Router,
     private authService: AuthService
   ) {}
+
+  togglePasswordVisibility() {
+    if (this.passwordType === 'password') {
+      this.passwordType = 'text';
+      this.passwordIcon = 'eye';
+    } else {
+      this.passwordType = 'password';
+      this.passwordIcon = 'eye-off';
+    }
+  }
+
+
+
 
   // Método para iniciar sesión
   async login() {

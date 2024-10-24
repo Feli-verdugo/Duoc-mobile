@@ -113,3 +113,12 @@ ion-card {
   justify-content: center;
   display: flex;
 }
+
+
+ion-icon {
+  transition: transform 0.3s ease-in-out;
+}
+
+ion-button:active ion-icon {
+  transform: scale(1.2);
+}

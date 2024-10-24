@@ -95,3 +95,12 @@ ion-card {
 .subtitulo{
     top: 17px;
 }
+
+ion-icon {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  ion-button:active ion-icon {
+    transform: scale(1.2);
+  }
+  
