@@ -3,6 +3,7 @@ import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -65,4 +66,8 @@ export class LoginPage {
       console.log('Por favor seleccione un tipo de usuario');
     }
   }
+
+
+
+  
 }

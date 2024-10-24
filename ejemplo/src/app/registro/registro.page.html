@@ -31,6 +31,9 @@
           <ion-item>
             <ion-label position="floating">Confirmar Contraseña</ion-label>
             <ion-input type="password" [(ngModel)]="registerData.confirmPassword"></ion-input>
+            <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
+              <ion-icon [name]="passwordIcon"></ion-icon>
+            </ion-button>
           </ion-item>
           <ion-item>
             <ion-label>Tipo de usuario</ion-label>
