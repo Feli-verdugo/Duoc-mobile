@@ -1,4 +1,4 @@
-s
+
 
 .map-image {
     max-width: 120%;
@@ -20,12 +20,9 @@ ion-list {
     padding: 0 ;
 }
 
-
-
-
 ion-item {
-    --background: #f7f7f7;
-    --border-color: #e0e0e0;
+    --background: #000000;
+    --border-color: #000000;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -102,4 +99,25 @@ ion-tab-button:hover ion-icon {
     height: calc(100vh - 60px); /* Altura ajustada para que el mapa llene la pantalla */
     width: 100%;
     z-index: 1;
+}
+
+.button-container {
+    padding: 10px;
+}
+
+.form-container {
+    padding: 10px;
+    background-color: #000000;
+    border-radius: 10px;
+}
+
+
+.ruta {
+    background-color: #FCB32E;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.ruta:hover {
+    background-color: #000000;
 }

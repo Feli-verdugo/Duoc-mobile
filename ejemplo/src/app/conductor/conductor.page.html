@@ -16,24 +16,52 @@
       <ion-icon name="time"></ion-icon>
       {{duracion}}
     </div>
-  </div> 
+  </div>
 
-  <!-- Barra de búsqueda para ingresar destino -->
-  <div class="input-container">
-    <input type="text" [(ngModel)]="end" (input)="updateSearchResults()" placeholder="Ingresa un destino" id="input">
+  <!-- Botón para registrar viaje -->
+  <div class="button-container">
+    <ion-button expand="block" (click)="toggleForm()" color="primary">Registrar Viaje</ion-button>
+  </div>
+
+  <!-- Formulario para registrar viaje -->
+  <div *ngIf="showForm" class="form-container">
+    <ion-list class="ionlist">
+      <ion-item class="itemNombreConductor">
+        <ion-label position="floating">Nombre del Conductor</ion-label>
+        <ion-input [(ngModel)]="viaje.nombreConductor"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Patente del Vehículo</ion-label>
+        <ion-input [(ngModel)]="viaje.patente"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nombre del Vehículo</ion-label>
+        <ion-input [(ngModel)]="viaje.nombreVehiculo"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Precio</ion-label>
+        <ion-input type="number" [(ngModel)]="viaje.precio"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Lugar de Destino</ion-label>
+        <ion-input [(ngModel)]="end" (input)="updateSearchResults()"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <!-- Lista de resultados de autocompletar -->
+    <div id="rutas" *ngIf="autocompleteItems.length > 0">
+      <div class="ruta" *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+        {{ item.description }}
+      </div>
+    </div>
+
+    <ion-button expand="block" (click)="registrarViaje()" color="success">Guardar Viaje</ion-button>
   </div>
 
   <!-- Contenedor del mapa -->
   <div #map id="map" class="map-container"></div>
-
-  <!-- Lista de resultados de autocompletar -->
-  <div id="rutas" *ngIf="autocompleteItems.length > 0">
-    <div class="ruta" *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-      {{ item.description }}
-    </div>
-  </div> 
-
 </ion-content>
+
 
 <ion-footer>
   <ion-tab-bar slot="bottom">

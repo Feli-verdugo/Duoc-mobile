@@ -12,7 +12,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClientModule } from '@angular/common/http';
-
+import { ViajesService } from './services/viajes.service'; // Servicio para manejar los viajes
 
 @NgModule({
   declarations: 
@@ -31,7 +31,9 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: 
   [{ provide: RouteReuseStrategy, 
-  useClass: IonicRouteStrategy }],
+  useClass: IonicRouteStrategy },
+  ViajesService // Proveedor del servicio para gestionar los viajes
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

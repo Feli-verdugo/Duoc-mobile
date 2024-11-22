@@ -6,8 +6,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular'; // Importar el ModalController
 import { UserAccountPage } from '../user-account/user-account.page'; // Importar la página del modal
-
-
+import { ViajesService } from '../services/viajes.service'; // Importa el servicio
 declare var google: any;
 
 @Component({
@@ -28,6 +27,16 @@ export class ConductorPage implements OnInit {
   duracion: string = "";
   autocompleteItems: any[] = [];
 
+  // Nuevo: Controla la visibilidad del formulario y almacena los datos del viaje
+  public showForm: boolean = false;
+  public viaje = {
+    nombreConductor: '',
+    patente: '',
+    nombreVehiculo: '',
+    precio: 0,
+    destino: ''
+  };
+
   clientes = [
     { nombre: 'Cliente 1', costo: '$2000' },
     { nombre: 'Cliente 2', costo: '$1800' },
@@ -38,6 +47,7 @@ export class ConductorPage implements OnInit {
   ];
 
   constructor(
+    private viajesService: ViajesService, // Inyecta el servicio
     private navCtrl: NavController,
     private platform: Platform,
     private zone: NgZone,
@@ -46,6 +56,8 @@ export class ConductorPage implements OnInit {
     private router: Router,  // Inyecta Router
     private modalController: ModalController 
   ) {}
+
+  
 
   MandarACasita(){
     this.navCtrl.navigateForward('/home');
@@ -103,12 +115,7 @@ export class ConductorPage implements OnInit {
             lng: position.coords.longitude,
           };
 
-          let infoWindow = new google.maps.InfoWindow({
-            content: "Estás aquí.",
-            position: pos,
-          });
-          infoWindow.open(this.map);
-          this.map.setCenter(pos);
+
         }
       );
     }
@@ -178,6 +185,22 @@ export class ConductorPage implements OnInit {
     this.calculateAndDisplayRoute();
   }
 
+  // Nuevo: Lógica para el botón y formulario
+  toggleForm() {
+    this.showForm = !this.showForm;
+  }
+
+  registrarViaje() {
+    if (this.viaje.nombreConductor && this.viaje.patente && this.viaje.nombreVehiculo && this.end && this.viaje.precio) {
+      this.viaje.destino = this.end;
+      console.log('Viaje registrado:', this.viaje);
+      this.viajesService.guardarViaje({ ...this.viaje }); // Guarda el viaje en el servicio
+      this.showForm = false; // Ocultar el formulario
+      alert('Viaje guardado exitosamente');
+    } else {
+      alert('Por favor, completa todos los campos.');
+    }
+  }
 
   async onLogout() {
     try {
@@ -187,6 +210,7 @@ export class ConductorPage implements OnInit {
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
-}
+  }
+
   ngOnInit() {}
 }
