@@ -9,6 +9,15 @@ import { UserAccountPage } from '../user-account/user-account.page'; // Importar
 import { ViajesService } from '../services/viajes.service'; // Importa el servicio
 declare var google: any;
 
+interface Viaje {
+  nombreConductor: string;
+  patente: string;
+  nombreVehiculo: string;
+  precio: number;
+  destino: string;
+  estado: string;  // Puede ser "pendiente", "aceptado", "en progreso", etc.
+}
+
 @Component({
   selector: 'app-conductor',
   templateUrl: './conductor.page.html',
@@ -29,12 +38,15 @@ export class ConductorPage implements OnInit {
 
   // Nuevo: Controla la visibilidad del formulario y almacena los datos del viaje
   public showForm: boolean = false;
+  public viajes: any[] = [];
+  viajeAceptado: any = null; // Arreglo para almacenar los viajes disponibles
   public viaje = {
     nombreConductor: '',
     patente: '',
     nombreVehiculo: '',
     precio: 0,
-    destino: ''
+    destino: '',
+    estado: 'pendiente'
   };
 
   clientes = [
@@ -57,7 +69,7 @@ export class ConductorPage implements OnInit {
     private modalController: ModalController 
   ) {}
 
-  
+  ngOnInit() {this.loadViajes();}
 
   MandarACasita(){
     this.navCtrl.navigateForward('/home');
@@ -193,6 +205,7 @@ export class ConductorPage implements OnInit {
   registrarViaje() {
     if (this.viaje.nombreConductor && this.viaje.patente && this.viaje.nombreVehiculo && this.end && this.viaje.precio) {
       this.viaje.destino = this.end;
+      this.viaje.estado = 'pendiente'; // Asegúrate de establecer el estado aquí
       console.log('Viaje registrado:', this.viaje);
       this.viajesService.guardarViaje({ ...this.viaje }); // Guarda el viaje en el servicio
       this.showForm = false; // Ocultar el formulario
@@ -201,6 +214,46 @@ export class ConductorPage implements OnInit {
       alert('Por favor, completa todos los campos.');
     }
   }
+
+  loadViajes() {
+    const viajes: Viaje[] = JSON.parse(localStorage.getItem('viajes') || '[]');
+
+    // Buscar el viaje que esté aceptado
+    this.viajeAceptado = viajes.find(viaje => viaje.estado === 'aceptado') || null;
+  }
+
+  // Iniciar el viaje cuando se hace clic en el botón
+  iniciarViaje() {
+    if (this.viajeAceptado) {
+      this.viajeAceptado.estado = 'en progreso'; // Cambiar el estado del viaje
+      localStorage.setItem('viajes', JSON.stringify([this.viajeAceptado])); // Guardar el cambio en localStorage
+      alert('El viaje ha comenzado.');
+    }
+  }
+
+  finalizarViaje() {
+    if (this.viajeAceptado) {
+      this.viajeAceptado.estado = 'finalizado'; // Cambiar el estado a finalizado
+      this.updateViajes(); // Actualizar los viajes en localStorage
+      alert('El viaje ha finalizado.');
+    }
+  }
+
+  // Función para actualizar los viajes en localStorage
+  updateViajes() {
+    const viajes: Viaje[] = JSON.parse(localStorage.getItem('viajes') || '[]');
+    const viajeIndex = viajes.findIndex(v => v.patente === this.viajeAceptado?.patente);
+    if (viajeIndex !== -1) {
+      viajes[viajeIndex] = this.viajeAceptado!; // Actualizamos el viaje
+      localStorage.setItem('viajes', JSON.stringify(viajes)); // Guardamos los cambios
+    }
+  }
+
+  saveViajes() {
+    localStorage.setItem('viajes', JSON.stringify(this.viajes)); // Guardar los viajes en localStorage
+  }
+
+
 
   async onLogout() {
     try {
@@ -212,5 +265,6 @@ export class ConductorPage implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  
+  
 }

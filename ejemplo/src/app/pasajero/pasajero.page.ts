@@ -12,8 +12,8 @@ import { ViajesService } from '../services/viajes.service'; // Importar el servi
   styleUrls: ['./pasajero.page.scss'],
 })
 export class PasajeroPage implements OnInit {
-  viajes: any[] = []; // Lista de viajes disponibles
-
+  public viajes: any[] = []; // Arreglo para almacenar los viajes disponibles
+  
   constructor(
     private navCtrl: NavController,
     private popoverController: PopoverController,
@@ -24,12 +24,31 @@ export class PasajeroPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadViajes(); // Cargar viajes al iniciar la vista
+    this.loadViajes();
+    console.log(this.viajes); // Cargar viajes al iniciar la vista
+  }
+
+
+  aceptarViaje(index: number) {
+    let viajes = JSON.parse(localStorage.getItem('viajes') || '[]'); // Cargar viajes desde localStorage
+    
+    if (viajes[index].estado === 'pendiente') {
+      viajes[index].estado = 'aceptado'; // Cambiar estado del viaje a 'aceptado'
+      localStorage.setItem('viajes', JSON.stringify(viajes)); // Guardar los cambios en localStorage
+  
+      alert('Has aceptado el viaje.');
+      this.loadViajes(); // Recargar los viajes (actualiza la vista)
+    }
   }
 
   loadViajes() {
-    this.viajes = this.viajesService.obtenerViajes(); // Obtiene los viajes desde el servicio
-    console.log('Viajes cargados:', this.viajes); // Verifica si los viajes están siendo cargados correctamente
+    const storedViajes = localStorage.getItem('viajes');
+    this.viajes = storedViajes ? JSON.parse(storedViajes) : [];
+    console.log(this.viajes);
+  }
+
+  saveViajes() {
+    localStorage.setItem('viajes', JSON.stringify(this.viajes));
   }
 
   async presentOptionsPopover(event: Event) {

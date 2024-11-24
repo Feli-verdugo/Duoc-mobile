@@ -9,10 +9,22 @@ export class ViajesService {
 constructor() {}
 
   // Agregar un nuevo viaje
-guardarViaje(viaje: any) {
-    this.viajes.push(viaje);
-    localStorage.setItem('viajes', JSON.stringify(this.viajes)); // Guardar los viajes en localStorage
-}
+  // Función para guardar un viaje
+  guardarViaje(viaje: any) {
+    // Recupera los viajes almacenados, si existen
+    let viajes = JSON.parse(localStorage.getItem('viajes') || '[]');
+
+    // Agregar el nuevo viaje
+    viajes.push(viaje);
+
+    // Guardar los viajes actualizados en localStorage
+    localStorage.setItem('viajes', JSON.stringify(viajes));
+  }
+
+  // Función para cargar los viajes (si es necesario)
+  cargarViajes() {
+    return JSON.parse(localStorage.getItem('viajes') || '[]');
+  }
 
   // Obtener todos los viajes
 obtenerViajes() {

@@ -47,18 +47,16 @@
         <ion-input [(ngModel)]="end" (input)="updateSearchResults()"></ion-input>
       </ion-item>
     </ion-list>
-
     <!-- Lista de resultados de autocompletar -->
     <div id="rutas" *ngIf="autocompleteItems.length > 0">
       <div class="ruta" *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
         {{ item.description }}
-      </div>
+      </div>  
     </div>
-
+    <button class="btnAceptar" *ngIf="viajeAceptado.estado === 'aceptado'" (click)="iniciarViaje()" >Iniciar Viaje</button>
+    <button class="btnFinalizar" *ngIf="viajeAceptado?.estado === 'en progreso'" (click)="finalizarViaje()">Finalizar Viaje</button>
     <ion-button expand="block" (click)="registrarViaje()" color="success">Guardar Viaje</ion-button>
   </div>
-
-  <!-- Contenedor del mapa -->
   <div #map id="map" class="map-container"></div>
 </ion-content>
 
@@ -85,4 +83,5 @@
       <ion-label>Cuenta</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
+  
 </ion-footer>
