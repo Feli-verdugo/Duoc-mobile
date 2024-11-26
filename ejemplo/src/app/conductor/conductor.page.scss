@@ -21,6 +21,7 @@ ion-list {
 }
 
 ion-item {
+    color: #000000;
     --background: #000000;
     --border-color: #000000;
     border-bottom: 1px solid var(--border-color);
@@ -85,7 +86,7 @@ ion-tab-button:hover ion-icon {
     margin-top: -27px;
 }
 .ruta {
-    background-color: #FCB32E;
+    background-color: #ffffff;
     padding: 10px;
     cursor: pointer;
 }

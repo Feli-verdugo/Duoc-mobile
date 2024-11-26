@@ -53,7 +53,7 @@
         {{ item.description }}
       </div>  
     </div>
-    <button class="btnAceptar" *ngIf="viajeAceptado.estado === 'aceptado'" (click)="iniciarViaje()" >Iniciar Viaje</button>
+    <button class="btnAceptar" *ngIf="viajeAceptado?.estado === 'aceptado'" (click)="iniciarViaje()" >Iniciar Viaje</button>
     <button class="btnFinalizar" *ngIf="viajeAceptado?.estado === 'en progreso'" (click)="finalizarViaje()">Finalizar Viaje</button>
     <ion-button expand="block" (click)="registrarViaje()" color="success">Guardar Viaje</ion-button>
   </div>
