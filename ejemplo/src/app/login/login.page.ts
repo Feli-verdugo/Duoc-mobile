@@ -45,21 +45,29 @@ export class LoginPage {
     }
   }
 
+
+
+
   // Método para iniciar sesión
   async login() {
     const { email, password } = this.loginData;
   
-    // Buscar el usuario en localStorage
-    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    const usuario = usuarios.find((u: any) => u.email === email && u.clave === password);
+    // Recuperar usuarios del localStorage
+    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
   
-    if (usuario) {
-      console.log(`Bienvenido/a ${usuario.nombre}!`);
-      this.MandarAhome(usuario.userType || 'client'); // Ajusta según el tipo de usuario
+    // Buscar el usuario en el arreglo
+    const usuarioEncontrado = usuarios.find(
+      (u: { email: string; clave: string }) => u.email === email && u.clave === password
+    );
+  
+    if (usuarioEncontrado) {
+      console.log(`Inicio de sesión exitoso para: ${usuarioEncontrado.nombre}`);
+      this.MandarAhome(usuarioEncontrado.userType); // Redirigir según el tipo de usuario
     } else {
-      this.errorMessage = 'Correo o contraseña incorrectos. Intenta nuevamente.';
+      console.error('Correo o contraseña incorrectos');
     }
   }
+  
 
   // Método para redirigir al home según el tipo de usuario
   MandarAhome(userType: string) {
@@ -78,52 +86,65 @@ export class LoginPage {
 
 
   async resetPass() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Cargando...'
-    });
-    loading.present();
+    const { email } = this.loginData;
   
-    const email = this.loginData.email; // Email del formulario actual
+    // Recuperar usuarios del localStorage
+    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
   
-    // Buscar el usuario en el localStorage
-    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]'); // Asegúrate de guardar usuarios en localStorage
-    const usuario = usuarios.find((u: any) => u.email === email);
+    // Buscar el usuario por email
+    const usuarioEncontrado = usuarios.find(
+      (u: { email: string }) => u.email === email
+    );
   
-    if (usuario) {
-      let nuevaClave = Math.random().toString(36).slice(-6); // Generar nueva contraseña
-      let body = {
-        "email": email,
-        "clave": nuevaClave,
-        "app": "TeLlevoAPP" // Nombre de la app
+    if (usuarioEncontrado) {
+      const nuevaClave = Math.random().toString(36).slice(-6); // Generar nueva contraseña
+      usuarioEncontrado.clave = nuevaClave;
+  
+      // Guardar usuarios actualizados en localStorage
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+  
+      const body = {
+        email: email, // Email del usuario
+        clave: nuevaClave, // Nueva contraseña
+        app: "TellevoAPP", // Nombre de la app (ajusta según necesidad)
       };
   
-      // Realizar la petición HTTP
-      this.http.post("https://myths.cl/api/reset_password.php", body)
-        .subscribe((data) => {
-          console.log('Respuesta del servidor:', data);
-          // Actualizar contraseña en localStorage
-          usuario.clave = nuevaClave;
-          localStorage.setItem('usuarios', JSON.stringify(usuarios));
-          loading.dismiss();
-          alert('Se ha enviado una nueva contraseña a tu correo.');
-        }, error => {
-          console.error('Error en la petición', error);
-          loading.dismiss();
+      try {
+        const loading = await this.loadingCtrl.create({
+          message: 'Enviando correo...',
         });
+        await loading.present();
+  
+        // Hacer la solicitud POST a la API
+        this.http.post("https://myths.cl/api/reset_password.php", body)
+          .subscribe(
+            (response) => {
+              console.log('Respuesta del servidor:', response);
+              loading.dismiss();
+              alert('Se ha enviado una nueva contraseña a tu correo.');
+            },
+            (error) => {
+              console.error('Error al enviar la solicitud:', error);
+              loading.dismiss();
+              alert('Hubo un error al enviar el correo. Intenta nuevamente.');
+            }
+          );
+      } catch (error) {
+        console.error('Error en el proceso:', error);
+        alert('Ocurrió un error inesperado.');
+      }
     } else {
-      alert('Usuario no encontrado.');
-      loading.dismiss();
+      alert('Correo no encontrado. Verifica tus datos.');
     }
   }
+  
+  
 
   ngOnInit() {
-    // Solo agrega usuarios si no están en localStorage
+    // Inicializamos el localStorage si no existe
     if (!localStorage.getItem('usuarios')) {
-      const usuarios = [
-        { nombre: "Sebastian Negro", email: "seba.negro@gmail.com", clave: "elnegro23" },
-        { nombre: "jose", email: "tomi231tomi@gmail.com", clave: "tomito231" }
-      ];
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      localStorage.setItem('usuarios', JSON.stringify([]));
     }
   }
+  
 }

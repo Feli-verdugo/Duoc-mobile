@@ -38,21 +38,30 @@ export class RegistroPage {
       console.error('Las contraseñas no coinciden');
       return;
     }
-
-    try {
-      // Registro del usuario en el servicio de autenticación
-      await this.authService.register(
-        this.registerData.email,
-        this.registerData.password,
-        this.registerData.userType,
-        this.registerData.name // Aquí se agrega el nombre de usuario
-      );
-      console.log('Usuario registrado y guardado en LocalStorage:', this.registerData);
-
-      // Redirigir a la página de inicio de sesión
-      this.router.navigate(['/login']);
-    } catch (error) {
-      console.log('Error en el registro:', error);
+  
+    // Recuperar usuarios del localStorage
+    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+  
+    // Verificar si el correo ya está registrado
+    if (usuarios.some((u: { email: string }) => u.email === this.registerData.email)) {
+      console.error('El correo ya está registrado');
+      return;
     }
+  
+    // Agregar el nuevo usuario al arreglo
+    usuarios.push({
+      nombre: this.registerData.name,
+      email: this.registerData.email,
+      clave: this.registerData.password,
+      userType: this.registerData.userType,
+    });
+  
+    // Guardar el arreglo actualizado en localStorage
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    console.log('Usuario registrado exitosamente:', this.registerData);
+  
+    // Redirigir al login
+    this.router.navigate(['/login']);
   }
+  
 }
