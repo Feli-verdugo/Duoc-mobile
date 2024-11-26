@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service'; // Importamos AuthService
 import { ModalController } from '@ionic/angular';
 import { ViajesService } from '../services/viajes.service'; // Importamos el servicio ViajesService
+import { Router } from '@angular/router';
+import { MenuLoko } from '../menu-loko/menu-loko.component';
 
 @Component({
   selector: 'app-user-account',
@@ -13,6 +15,7 @@ export class UserAccountPage implements OnInit {
   userTrips: any[] = []; // Lista de viajes del usuario
 
   constructor(
+    private router: Router,
     private authService: AuthService, 
     private modalController: ModalController,
     private viajesService: ViajesService // Inyectamos el servicio de viajes
@@ -22,6 +25,7 @@ export class UserAccountPage implements OnInit {
     this.loadUserData(); // Cargar los datos del usuario
   }
 
+  
   loadUserData() {
     const user = this.authService.getAuthState(); // Obtener los datos del usuario desde AuthService
     if (user) {
@@ -42,4 +46,16 @@ export class UserAccountPage implements OnInit {
   closeModal() {
     this.modalController.dismiss(); // Cerrar el modal
   }
+
+  async onLogout() {
+    try {
+      await this.authService.logout();
+      console.log('Sesión cerrada');
+      this.router.navigate(['/login']); // Redirige a la página de login después de cerrar sesión
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  }
+
+
 }
