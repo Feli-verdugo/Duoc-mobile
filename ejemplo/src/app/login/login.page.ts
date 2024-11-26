@@ -45,22 +45,19 @@ export class LoginPage {
     }
   }
 
-
-
-
   // Método para iniciar sesión
   async login() {
     const { email, password } = this.loginData;
-
-    try {
-      const userData = await this.authService.login(email, password);
-      console.log('Inicio de sesión exitoso', userData);
-
-      // Redirigir según el tipo de usuario
-      this.MandarAhome(userData.userType);
-    } catch (error) {
+  
+    // Buscar el usuario en localStorage
+    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    const usuario = usuarios.find((u: any) => u.email === email && u.clave === password);
+  
+    if (usuario) {
+      console.log(`Bienvenido/a ${usuario.nombre}!`);
+      this.MandarAhome(usuario.userType || 'client'); // Ajusta según el tipo de usuario
+    } else {
       this.errorMessage = 'Correo o contraseña incorrectos. Intenta nuevamente.';
-      console.log('Error en el inicio de sesión:', error);
     }
   }
 
@@ -85,20 +82,28 @@ export class LoginPage {
       message: 'Cargando...'
     });
     loading.present();
-
-    const usuarioEncontrado = this.loginData.email; // Usa el email del formulario actual
-    if (usuarioEncontrado) {
-      let nuevaClave = Math.random().toString(36).slice(-6); // Genera nueva contraseña
+  
+    const email = this.loginData.email; // Email del formulario actual
+  
+    // Buscar el usuario en el localStorage
+    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]'); // Asegúrate de guardar usuarios en localStorage
+    const usuario = usuarios.find((u: any) => u.email === email);
+  
+    if (usuario) {
+      let nuevaClave = Math.random().toString(36).slice(-6); // Generar nueva contraseña
       let body = {
-        "email": this.loginData.email, // Email del usuario que solicitó el reset
+        "email": email,
         "clave": nuevaClave,
-        "app": "TellevoAPP" // Cambia por el nombre de tu aplicación si es necesario
+        "app": "TeLlevoAPP" // Nombre de la app
       };
-
-      // Realiza la petición HTTP
+  
+      // Realizar la petición HTTP
       this.http.post("https://myths.cl/api/reset_password.php", body)
         .subscribe((data) => {
           console.log('Respuesta del servidor:', data);
+          // Actualizar contraseña en localStorage
+          usuario.clave = nuevaClave;
+          localStorage.setItem('usuarios', JSON.stringify(usuarios));
           loading.dismiss();
           alert('Se ha enviado una nueva contraseña a tu correo.');
         }, error => {
@@ -106,9 +111,19 @@ export class LoginPage {
           loading.dismiss();
         });
     } else {
-      console.log("Email no encontrado");
+      alert('Usuario no encontrado.');
       loading.dismiss();
     }
   }
-  
+
+  ngOnInit() {
+    // Solo agrega usuarios si no están en localStorage
+    if (!localStorage.getItem('usuarios')) {
+      const usuarios = [
+        { nombre: "Sebastian Negro", email: "seba.negro@gmail.com", clave: "elnegro23" },
+        { nombre: "jose", email: "tomi231tomi@gmail.com", clave: "tomito231" }
+      ];
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    }
+  }
 }
