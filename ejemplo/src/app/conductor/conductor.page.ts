@@ -15,7 +15,8 @@ interface Viaje {
   nombreVehiculo: string;
   precio: number;
   destino: string;
-  estado: string;  // Puede ser "pendiente", "aceptado", "en progreso", etc.
+  estado: string;
+  userEmail: string;  // Puede ser "pendiente", "aceptado", "en progreso", etc.
 }
 
 @Component({
@@ -46,7 +47,8 @@ export class ConductorPage implements OnInit {
     nombreVehiculo: '',
     precio: 0,
     destino: '',
-    estado: 'pendiente'
+    estado: 'pendiente',
+    userEmail: ''
   };
 
   clientes = [
@@ -203,12 +205,20 @@ export class ConductorPage implements OnInit {
   }
 
   registrarViaje() {
+    // Verificamos que todos los campos estén completos
     if (this.viaje.nombreConductor && this.viaje.patente && this.viaje.nombreVehiculo && this.end && this.viaje.precio) {
       this.viaje.destino = this.end;
-      this.viaje.estado = 'pendiente'; // Asegúrate de establecer el estado aquí
+      this.viaje.estado = 'pendiente';  // Establecemos el estado del viaje como pendiente
+
+      // Obtener el correo del usuario autenticado
+      const user = this.authService.getAuthState();  // Obtenemos el usuario autenticado
+      if (user) {
+        this.viaje.userEmail = user.email;  // Añadimos el correo al objeto viaje
+      }
+
       console.log('Viaje registrado:', this.viaje);
-      this.viajesService.guardarViaje({ ...this.viaje }); // Guarda el viaje en el servicio
-      this.showForm = false; // Ocultar el formulario
+      this.viajesService.guardarViaje({ ...this.viaje }); // Guardamos el viaje con el correo del usuario
+      this.showForm = false;  // Ocultamos el formulario
       alert('Viaje guardado exitosamente');
     } else {
       alert('Por favor, completa todos los campos.');

@@ -28,3 +28,53 @@
   .tituloVista{
     font-size: smaller;
   }
+
+
+  /* Estilo principal para el contenedor de los viajes */
+ion-list {
+  margin-top: 20px;
+  padding: 0;
+}
+
+ion-item {
+  background-color: #FCB32E; /* Fondo suave para cada viaje */
+  border-radius: 8px; /* Bordes redondeados */
+  margin-bottom: 15px; /* Espaciado entre los elementos */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  padding: 15px;
+  transition: transform 0.3s ease; /* Animación suave al hacer hover */
+  
+  /* Cambiar de color al hacer hover */
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Estilo del texto dentro de cada item */
+ion-label {
+  color: #333; /* Texto oscuro para buena legibilidad */
+}
+
+/* Títulos del viaje (nombre del vehículo y destino) */
+h2 {
+  display: flex;
+  width: 12rem;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff; /* Color azul para destacar el título */
+  margin-bottom: 8px;
+}
+
+/* Párrafos (fecha y precio) */
+
+
+/* Estilo del mensaje cuando no hay viajes */
+ng-template {
+  text-align: center;
+  font-size: 16px;
+  color: #aaa;
+  margin-top: 30px;
+}
+
+

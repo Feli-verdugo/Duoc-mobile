@@ -16,5 +16,20 @@
       <p><strong>Correo:</strong> {{ userData.email }}</p>
       <p><strong>Tipo de Cuenta:</strong> {{ userData.userType }}</p>
     </div>
+
+    <!-- Sección de Viajes -->
+    <div *ngIf="userTrips.length > 0; else noTrips">
+      <ion-list>
+        <ion-item *ngFor="let viaje of userTrips">
+          <ion-label>
+            <h2>{{ viaje.nombreVehiculo }} - {{ viaje.destino }}</h2>
+            <p>Precio: ${{ viaje.precio }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+    <ng-template #noTrips>
+      <p>No has realizado viajes aún.</p>
+    </ng-template>
   </div>
 </ion-content>
