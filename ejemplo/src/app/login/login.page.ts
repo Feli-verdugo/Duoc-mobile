@@ -62,11 +62,16 @@ export class LoginPage {
   
     if (usuarioEncontrado) {
       console.log(`Inicio de sesión exitoso para: ${usuarioEncontrado.nombre}`);
+      
+      // Guardar el usuario autenticado en el localStorage
+      localStorage.setItem('loggedInUser', email);
+  
       this.MandarAhome(usuarioEncontrado.userType); // Redirigir según el tipo de usuario
     } else {
       console.error('Correo o contraseña incorrectos');
     }
   }
+  
   
 
   // Método para redirigir al home según el tipo de usuario

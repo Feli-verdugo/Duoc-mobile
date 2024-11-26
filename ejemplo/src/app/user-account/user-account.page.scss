@@ -1,7 +1,7 @@
 .account-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: unset;
     align-items: center;
     height: 100%;
   }
@@ -12,12 +12,19 @@
   }
   
   .account-info {
-    text-align: center;
+    text-align: left;
     margin-top: 20px;
   }
   
   .account-info p {
     margin: 10px 0;
-    font-size: 18px;
+    font-size: 16px;
   }
-  
+
+  .botonCerrar{
+    font-size: small;
+  }
+
+  .tituloVista{
+    font-size: smaller;
+  }

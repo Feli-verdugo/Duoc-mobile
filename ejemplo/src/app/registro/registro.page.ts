@@ -39,16 +39,14 @@ export class RegistroPage {
       return;
     }
   
-    // Recuperar usuarios del localStorage
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]'); // Obtener usuarios existentes
   
-    // Verificar si el correo ya está registrado
     if (usuarios.some((u: { email: string }) => u.email === this.registerData.email)) {
       console.error('El correo ya está registrado');
       return;
     }
   
-    // Agregar el nuevo usuario al arreglo
+    // Agregar el nuevo usuario
     usuarios.push({
       nombre: this.registerData.name,
       email: this.registerData.email,
@@ -56,12 +54,11 @@ export class RegistroPage {
       userType: this.registerData.userType,
     });
   
-    // Guardar el arreglo actualizado en localStorage
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    localStorage.setItem('usuarios', JSON.stringify(usuarios)); // Guardar usuarios actualizados
     console.log('Usuario registrado exitosamente:', this.registerData);
   
-    // Redirigir al login
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']); // Redirigir al login
   }
+    
   
 }

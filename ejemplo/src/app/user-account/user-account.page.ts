@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service'; // Importamos AuthService
+import { AuthService } from '../services/auth.service';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -8,7 +8,7 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./user-account.page.scss'],
 })
 export class UserAccountPage implements OnInit {
-  userData: any = {}; // Objeto que almacenará los datos del usuario
+  userData: any = {}; // Datos del usuario autenticado
 
   constructor(
     private authService: AuthService, 
@@ -16,12 +16,13 @@ export class UserAccountPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadUserData(); // Cargar los datos del usuario
+    this.loadUserData(); // Cargar datos del usuario al inicializar
   }
 
   loadUserData() {
-    const user = this.authService.getAuthState(); // Obtener los datos del usuario desde AuthService
+    const user = this.authService.getAuthState(); // Obtener los datos del usuario autenticado
     if (user) {
+      console.log('Usuario autenticado:', user); // Agregar un log para verificar el usuario
       this.userData = user;
     } else {
       console.log('No hay usuario autenticado');
