@@ -1,5 +1,5 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { NavController, Platform } from '@ionic/angular';
+import { NavController, Platform, ToastController } from '@ionic/angular';
 import { MenuLoko } from '../menu-loko/menu-loko.component';
 import { PopoverController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
@@ -68,10 +68,21 @@ export class ConductorPage implements OnInit {
     private popoverController: PopoverController,
     private authService: AuthService,  // Inyecta AuthService
     private router: Router,  // Inyecta Router
-    private modalController: ModalController 
+    private modalController: ModalController ,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {this.loadViajes();}
+
+  async showToast(message: string, color: string = 'danger') {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 3000,
+      color,
+      position: 'bottom'
+    });
+    await toast.present();
+  }
 
   MandarACasita(){
     this.navCtrl.navigateForward('/home');
@@ -205,24 +216,42 @@ export class ConductorPage implements OnInit {
   }
 
   registrarViaje() {
-    // Verificamos que todos los campos estén completos
-    if (this.viaje.nombreConductor && this.viaje.patente && this.viaje.nombreVehiculo && this.end && this.viaje.precio) {
-      this.viaje.destino = this.end;
-      this.viaje.estado = 'pendiente';  // Establecemos el estado del viaje como pendiente
-
-      // Obtener el correo del usuario autenticado
-      const user = this.authService.getAuthState();  // Obtenemos el usuario autenticado
-      if (user) {
-        this.viaje.userEmail = user.email;  // Añadimos el correo al objeto viaje
-      }
-
-      console.log('Viaje registrado:', this.viaje);
-      this.viajesService.guardarViaje({ ...this.viaje }); // Guardamos el viaje con el correo del usuario
-      this.showForm = false;  // Ocultamos el formulario
-      alert('Viaje guardado exitosamente');
-    } else {
-      alert('Por favor, completa todos los campos.');
+    // Validar que todos los campos estén completos
+    if (!this.viaje.nombreConductor.trim()) {
+      this.showToast('Debes ingresar el nombre del conductor.');
+      return;
     }
+    if (!this.viaje.patente.trim()) {
+      this.showToast('Debes ingresar la patente del vehículo.');
+      return;
+    }
+    if (!this.viaje.nombreVehiculo.trim()) {
+      this.showToast('Debes ingresar el nombre del vehículo.');
+      return;
+    }
+    if (!this.end.trim()) {
+      this.showToast('Debes ingresar el lugar de destino.');
+      return;
+    }
+    if (!this.viaje.precio || this.viaje.precio <= 0) {
+      this.showToast('Debes ingresar un precio válido.');
+      return;
+    }
+
+    // Si todas las validaciones pasan, registrar el viaje
+    this.viaje.destino = this.end;
+    this.viaje.estado = 'pendiente'; // Establecemos el estado del viaje como pendiente
+
+    // Obtener el correo del usuario autenticado
+    const user = this.authService.getAuthState(); // Obtenemos el usuario autenticado
+    if (user) {
+      this.viaje.userEmail = user.email; // Añadimos el correo al objeto viaje
+    }
+
+    console.log('Viaje registrado:', this.viaje);
+    this.viajesService.guardarViaje({ ...this.viaje }); // Guardamos el viaje con el correo del usuario
+    this.showForm = false; // Ocultamos el formulario
+    this.showToast('Viaje guardado exitosamente', 'success');
   }
 
   loadViajes() {
