@@ -1,5 +1,64 @@
+.background{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(270deg, #FFB800, #1A1A1A);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+    z-index: -1;
+    overflow: hidden;
+}
+
+$color1: #FFB800;
+$color2: #1A1A1A;
+$color3: #FFFFFF;
+$shapeColor: #666666;
+.shape-1 {
+    top: 10%;
+    left: 10%;
+    animation-duration: 12s;
+}
+
+.shape-2 {
+    bottom: 20%;
+    right: 15%;
+    animation-duration: 10s;
+}
+
+.shape-3 {
+    top: 50%;
+    left: 50%;
+    animation-duration: 15s;
+    width: 150px;
+    height: 150px;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes moveShape {
+    0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+    }
+    50% {
+    transform: translate(100px, 100px) rotate(360deg);
+    }
+}
+
+
 ion-toolbar {
-    background-color: #FCB32E;
+    background-color: black !important;
     text-align: center;
 }
 
@@ -55,6 +114,9 @@ ion-title {
     background-color: #000000;
 }
 
+h2{
+    margin-left: 40px;
+}
 .map-container {
     position: relative;
     height: calc(100vh - 60px); /* Altura ajustada para que el mapa llene la pantalla */

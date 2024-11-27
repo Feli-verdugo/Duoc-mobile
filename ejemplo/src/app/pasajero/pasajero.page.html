@@ -1,10 +1,15 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar>
     <ion-title>TeLlevoApp-Pasajero</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div class="background">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
   <div *ngIf="viajes.length > 0; else noViajes">
     <h2>Viajes Disponibles</h2>
     <ion-list>
@@ -31,21 +36,6 @@
 <!-- Footer con opciones de navegación -->
 <ion-footer>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="home" [routerLink]="'/home'">
-      <ion-icon name="home-outline"></ion-icon>
-      <ion-label>Home</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="options" (click)="presentOptionsPopover($event)">
-      <ion-icon name="settings-outline"></ion-icon>
-      <ion-label>Opciones</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="activity" (click)="onLogout()">
-      <ion-icon name="list-outline"></ion-icon>
-      <ion-label>Actividad</ion-label>
-    </ion-tab-button>
-
     <ion-tab-button tab="account" (click)="presentAccountModal()">
       <ion-icon name="person-outline"></ion-icon>
       <ion-label>Cuenta</ion-label>
