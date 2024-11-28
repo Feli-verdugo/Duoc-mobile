@@ -13,7 +13,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { provideHttpClient } from '@angular/common/http';
 import { ViajesService } from './services/viajes.service'; // Servicio para manejar los viajes
-
+import { getAnalytics } from 'firebase/analytics';
+import { initializeApp } from 'firebase/app';  // Importa initializeApp desde firebase/app
 @NgModule({
   declarations: 
   [AppComponent
@@ -35,4 +36,10 @@ import { ViajesService } from './services/viajes.service'; // Servicio para mane
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    // Inicializa Firebase con la configuración del entorno
+    const app = initializeApp(environment.firebaseConfig);
+    const analytics = getAnalytics(app);  // Si necesitas Analytics
+  }
+}

@@ -78,6 +78,7 @@ export class LoginPage implements OnInit {
       this.showToast(`Inicio de sesión exitoso: ${usuarioEncontrado.nombre}`, 'success');
       this.MandarAhome(usuarioEncontrado.userType); // Redirigir según el tipo de usuario
       localStorage.setItem('loggedInUser', email);  
+      
     } else {
       this.showToast('Correo o contraseña incorrectos', 'danger');
     }

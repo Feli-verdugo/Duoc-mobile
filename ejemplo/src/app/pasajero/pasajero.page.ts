@@ -30,21 +30,20 @@ export class PasajeroPage implements OnInit {
 
 
   aceptarViaje(index: number) {
-    let viajes = JSON.parse(localStorage.getItem('viajes') || '[]'); // Cargar viajes desde localStorage
-    
+    let viajes = [...this.viajes]; // Crear una copia de los viajes
     if (viajes[index].estado === 'pendiente') {
       viajes[index].estado = 'aceptado'; // Cambiar estado del viaje a 'aceptado'
-      localStorage.setItem('viajes', JSON.stringify(viajes)); // Guardar los cambios en localStorage
-  
-      alert('Has aceptado el viaje.');
-      this.loadViajes(); // Recargar los viajes (actualiza la vista)
+      // Actualizar el estado del viaje en Firestore
+      this.viajesService.actualizarEstadoViaje(viajes[index].id, 'aceptado');
     }
   }
 
   loadViajes() {
-    const storedViajes = localStorage.getItem('viajes');
-    this.viajes = storedViajes ? JSON.parse(storedViajes) : [];
-    console.log(this.viajes);
+    // Suscribirse al Observable para obtener los viajes desde Firestore
+    this.viajesService.obtenerViajes().subscribe((viajes) => {
+      this.viajes = viajes;
+      console.log(this.viajes); // Imprimir los viajes obtenidos de Firestore
+    });
   }
 
   saveViajes() {

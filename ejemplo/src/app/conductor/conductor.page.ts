@@ -72,7 +72,12 @@ export class ConductorPage implements OnInit {
     private toastCtrl: ToastController
   ) {}
 
-  ngOnInit() {this.loadViajes();}
+  ngOnInit() {
+    this.loadViajes();
+     // Inicializamos los servicios de Google Maps
+  this.directionsService = new google.maps.DirectionsService();
+  this.directionsDisplay = new google.maps.DirectionsRenderer();
+  }
 
   async showToast(message: string, color: string = 'danger') {
     const toast = await this.toastCtrl.create({
@@ -84,6 +89,7 @@ export class ConductorPage implements OnInit {
     await toast.present();
   }
 
+  
   MandarACasita(){
     this.navCtrl.navigateForward('/home');
   }
@@ -184,7 +190,7 @@ export class ConductorPage implements OnInit {
       this.autocompleteItems = [];
       return;
     }
-
+  
     let service = new google.maps.places.AutocompleteService();
     service.getPlacePredictions(
       {
@@ -192,9 +198,10 @@ export class ConductorPage implements OnInit {
         componentRestrictions: { country: 'cl' },
       },
       (predictions: any[], status: string) => {
+        console.log('Predictions:', predictions, 'Status:', status); // Depuración
         this.zone.run(() => {
           this.autocompleteItems = [];
-          if (predictions) {
+          if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
             predictions.forEach((prediction) => {
               this.autocompleteItems.push(prediction);
             });
@@ -204,11 +211,12 @@ export class ConductorPage implements OnInit {
     );
   }
 
-  selectSearchResult(item: any) {
-    this.end = item.description;
-    this.autocompleteItems = [];
-    this.calculateAndDisplayRoute();
-  }
+selectSearchResult(item: any) {
+  this.end = item.description; // Actualiza el valor de `end` para el mapa
+  this.viaje.destino = item.description; // Actualiza el valor de `viaje.destino` para el registro del viaje
+  this.autocompleteItems = []; // Limpia las sugerencias
+  this.calculateAndDisplayRoute(); // Calcula la ruta con el destino seleccionado
+}
 
   // Nuevo: Lógica para el botón y formulario
   toggleForm() {
@@ -216,7 +224,6 @@ export class ConductorPage implements OnInit {
   }
 
   registrarViaje() {
-    // Validar que todos los campos estén completos
     if (!this.viaje.nombreConductor.trim()) {
       this.showToast('Debes ingresar el nombre del conductor.');
       return;
@@ -229,7 +236,7 @@ export class ConductorPage implements OnInit {
       this.showToast('Debes ingresar el nombre del vehículo.');
       return;
     }
-    if (!this.end.trim()) {
+    if (!this.viaje.destino.trim()) {
       this.showToast('Debes ingresar el lugar de destino.');
       return;
     }
@@ -238,29 +245,37 @@ export class ConductorPage implements OnInit {
       return;
     }
 
-    // Si todas las validaciones pasan, registrar el viaje
-    this.viaje.destino = this.end;
-    this.viaje.estado = 'pendiente'; // Establecemos el estado del viaje como pendiente
-
-    // Obtener el correo del usuario autenticado
-    const user = this.authService.getAuthState(); // Obtenemos el usuario autenticado
+    const user = this.authService.getAuthState();
     if (user) {
       this.viaje.userEmail = user.email; // Añadimos el correo al objeto viaje
     }
 
-    console.log('Viaje registrado:', this.viaje);
-    this.viajesService.guardarViaje({ ...this.viaje }); // Guardamos el viaje con el correo del usuario
-    this.showForm = false; // Ocultamos el formulario
-    this.showToast('Viaje guardado exitosamente', 'success');
+    // Guardar el viaje en Firestore
+    this.viajesService.guardarViaje(this.viaje)
+      .then(() => {
+        this.showToast('Viaje registrado exitosamente', 'success');
+        this.viaje = {
+          nombreConductor: '',
+          patente: '',
+          nombreVehiculo: '',
+          precio: 0,
+          destino: '',
+          estado: 'pendiente',
+          userEmail: ''
+        }; // Limpiar el formulario
+      })
+      .catch((error) => {
+        this.showToast('Error al registrar el viaje', 'danger');
+      });
   }
+  
 
   loadViajes() {
-    const viajes: Viaje[] = JSON.parse(localStorage.getItem('viajes') || '[]');
-
-    // Buscar el viaje que esté aceptado
-    this.viajeAceptado = viajes.find(viaje => viaje.estado === 'aceptado') || null;
+    this.viajesService.obtenerViajes().subscribe(viajes => {
+      this.viajes = viajes;
+      this.viajeAceptado = this.viajes.find(viaje => viaje.estado === 'aceptado') || null;
+    });
   }
-
   // Iniciar el viaje cuando se hace clic en el botón
   iniciarViaje() {
     if (this.viajeAceptado) {

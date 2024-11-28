@@ -22,25 +22,21 @@ export class UserAccountPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadUserData(); // Cargar los datos del usuario
+    this.loadUserTrips(); // Cargar los datos del usuario
   }
 
   
-  loadUserData() {
-    const user = this.authService.getAuthState(); // Obtener los datos del usuario desde AuthService
-    if (user) {
-      this.userData = user; // Guardamos los datos del usuario
-      this.loadUserTrips(user.email); // Cargamos los viajes del usuario
-    } else {
-      console.log('No hay usuario autenticado');
-    }
-  }
-
-  loadUserTrips(userEmail: string) {
-    const viajes = this.viajesService.obtenerViajes(); // Obtener los viajes almacenados
-    // Filtrar los viajes por el correo electrónico del usuario
-    this.userTrips = viajes.filter((viaje) => viaje.userEmail === userEmail);
-    console.log('Viajes del usuario:', this.userTrips); // Log para verificar los viajes
+  loadUserTrips() {
+    // Suscribirse al Observable que retorna todos los viajes desde Firestore
+    this.viajesService.obtenerViajes().subscribe((viajes: any[]) => {
+      const userEmail = this.authService.getAuthState().email;  // Obtener el correo del usuario autenticado
+      const user = this.authService.getAuthState(); // Obtener los datos del usuario desde AuthService
+      if (user) {
+        this.userData = user; // Guardamos los datos del usuario // Cargamos los viajes del usuario
+      } else {
+        console.log('No hay usuario autenticado');
+      }
+    });
   }
 
   closeModal() {
