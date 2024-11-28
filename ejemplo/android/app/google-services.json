@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "256404136179",
+    "project_id": "duocaplicacion",
+    "storage_bucket": "duocaplicacion.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256404136179:android:8d57162049f38fae26d786",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRMbh_Pdr6q_fHNpqByhbTRq2o_EwzvVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
